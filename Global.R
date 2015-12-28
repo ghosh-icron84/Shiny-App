@@ -2,18 +2,19 @@ library(tm)
 library(memoise)
 library(SnowballC)
 
- words <- character(5000L)
- list <- list("contracts", "smart", "closer", "financial", "programs", "technology",
-              "abound","align","automatically", "banks","bet","buddy","major","mortgage")
-                
+words <- readLines("C:/Users/debapriyag@icrakpo.com/Desktop/TextFiles/Text.txt")
+ch <- ""
+cho <- c("")
+
+
  
- getTerm <- memoise(function(words) {
+getTerm <- memoise(function(words) {
    
    #if (!(word %in% words))
     #stop("Unknown word")
-   
-  # text <- read.txt(word)
-                     #encoding="UTF-8")#
+  
+  #files <- readLines("C:/Users/debapriyag@icrakpo.com/Desktop/TextFiles/Text.txt")
+                    #encoding="UTF-8")
 
   
   myCorpus = Corpus(VectorSource(words))
