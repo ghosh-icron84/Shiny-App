@@ -1,5 +1,6 @@
 library(shiny)
 
+
 shinyServer(function(input, output, session) {
   
   interms <- reactive({
@@ -7,48 +8,72 @@ shinyServer(function(input, output, session) {
     isolate({ input$selection })
   }) 
   
-  terms <- reactive({
-  input$update
+  fileterms <- reactive({
+   input$update1
+  isolate ({
+    
+  inFile <- input$file1
+  if (is.null(inFile))
+    return(NULL)
+  
+    read.table(inFile$datapath, header=FALSE, sep="\t")
+             
+      })
+  }) 
+  
+terms <- reactive({
+    input$update
     isolate({
       withProgress({
         setProgress(message = "Processing corpus...")
-        getTerm(input$selection)
+        getTerm(input$file1)
       })
     })
   })
+
+   observe({
+    ch <- names(terms()) 
+    cho <<- as.vector(ch, mode = "character")
+    if(input$update == 1)
+    { updateCheckboxGroupInput(session, "check", choices = cho,
+                               selected = "" )  }
+  })
+  
   addterms <- reactive ({        
-     input$update2
+    input$update2
     isolate({ input$check })
-    })
+  })
   
+  observe ({
+  if (input$sel == "file1") 
   
-#observe({
-  # if(input$update3 == 1)
-   # { updateCheckboxGroupInput(session, "check", choices = list,
-    #                                    selected = "" ,inline = FALSE)  }
-    #})
-  
+  output$data1 <- renderTable({
+    fileterms()
+  })
+ else  if (input$sel == "selection") 
  
   output$data1 <- renderText({
-     interms()
+  interms()
+})
   })
   
- output$data <- renderText({
-  v <- terms()
-  names(v)
-  })
+  #output$data <- renderText({
+   # v <- terms()
+    #x <- names(v) 
+  #})
+  
+ 
  output$data2 <- renderText ({
-    addterms()
-   })
+   addterms()
+  })
   
- output$downloadData <- downloadHandler(
-   filename = function() { paste(input$check, '.csv', sep='') },
-   content = function(file) {
-     write.csv(addterms(), file = "C:/Users/debapriyag@icrakpo.com/Desktop/Keywords.csv", row.names=FALSE)
-   }
- )  
- 
- 
-  }) 
-    
-      
+  output$downloadData <- downloadHandler(
+    filename = function() { paste(input$check, '.csv', sep='') },
+    content = function(file) {
+      write.csv(addterms(), file = "Keywords.csv", row.names=FALSE)
+    }
+  )  
+  
+  
+}) 
+
