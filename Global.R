@@ -2,7 +2,7 @@ library(tm)
 library(memoise)
 library(SnowballC)
 
-words <- readLines("C:/Users/debapriyag@icrakpo.com/Desktop/TextFiles/Text.txt")
+words <- character(6000L)
 ch <- ""
 cho <- c("")
 
