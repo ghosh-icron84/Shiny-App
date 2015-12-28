@@ -26,7 +26,7 @@ terms <- reactive({
     isolate({
       withProgress({
         setProgress(message = "Processing corpus...")
-        getTerm(input$file1)
+        getTerm(input$selection)
       })
     })
   })
